@@ -248,15 +248,15 @@ function IssueRow({ issue, isSelected }: { issue: Issue; isSelected: boolean }) 
         )}
       </div>
 
-      <span className="text-xs text-text-tertiary w-[60px] shrink-0">
+      <span className="hidden sm:inline text-xs text-text-tertiary w-[60px] shrink-0">
         {issue.identifier}
       </span>
 
-      <span className="flex-1 text-sm text-text-primary truncate">
+      <span className="flex-1 text-sm text-text-primary truncate min-w-0">
         {issue.title}
       </span>
 
-      <div className="flex items-center gap-2">
+      <div className="hidden sm:flex items-center gap-2">
         {issue.labels.map((labelId) => {
           const label = getLabelById(labelId);
           if (!label) return null;
@@ -276,7 +276,7 @@ function IssueRow({ issue, isSelected }: { issue: Issue; isSelected: boolean }) 
       </div>
 
       {issue.assignee && (
-        <div className="w-6 h-6 rounded-full bg-bg-active flex items-center justify-center text-xs font-medium text-text-secondary">
+        <div className="hidden sm:flex w-6 h-6 rounded-full bg-bg-active items-center justify-center text-xs font-medium text-text-secondary shrink-0">
           {issue.assignee.charAt(0)}
         </div>
       )}
@@ -355,14 +355,14 @@ export function IssueList() {
 
   return (
     <div className="flex-1 flex flex-col min-w-0 bg-bg-primary">
-      <header className="h-12 px-4 flex items-center justify-between border-b border-border-subtle shrink-0">
+      <header className="h-12 px-4 pl-14 md:pl-4 flex items-center justify-between border-b border-border-subtle shrink-0">
         <div className="flex items-center gap-2">
           <h1 className="text-sm font-medium text-text-primary">{title}</h1>
           <span className="text-xs text-text-tertiary">{issues.length}</span>
         </div>
 
         <div className="flex items-center gap-2">
-          <div className="relative">
+          <div className="relative hidden sm:block">
             <Search size={14} className="absolute left-2 top-1/2 -translate-y-1/2 text-text-tertiary" />
             <input
               type="text"
@@ -378,7 +378,7 @@ export function IssueList() {
             className="flex items-center gap-1 h-7 px-2 bg-accent text-white text-sm rounded hover:bg-accent-hover transition-colors"
           >
             <Plus size={14} />
-            <span>New</span>
+            <span className="hidden sm:inline">New</span>
           </button>
         </div>
       </header>

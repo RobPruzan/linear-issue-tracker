@@ -7,13 +7,15 @@ import {
   CheckCircle2,
   XCircle,
   Search,
-  Plus,
   Inbox,
   ListTodo,
   Archive,
   Settings,
   ChevronDown,
+  Menu,
+  X,
 } from "lucide-react";
+import { useState, useEffect } from "react";
 import { useStore, setActiveView, Status, setFilterStatus } from "../store";
 
 const statusConfig: { status: Status; label: string; Icon: typeof Circle; colorVar: string }[] = [
@@ -28,13 +30,38 @@ export function Sidebar() {
   const activeView = useStore((s) => s.activeView);
   const filterStatus = useStore((s) => s.filterStatus);
   const issues = useStore((s) => s.issues);
+  const [isOpen, setIsOpen] = useState(false);
 
   const getCountForStatus = (status: Status) => issues.filter((i) => i.status === status).length;
   const getActiveCount = () => issues.filter((i) => i.status === "in_progress" || i.status === "todo").length;
   const getBacklogCount = () => issues.filter((i) => i.status === "backlog").length;
 
+  const handleNavClick = () => {
+    setIsOpen(false);
+  };
+
   return (
-    <aside className="w-[220px] h-full flex flex-col bg-bg-secondary border-r border-border-subtle">
+    <>
+      <button
+        onClick={() => setIsOpen(true)}
+        className="md:hidden fixed top-3 left-3 z-50 p-2 rounded-lg bg-bg-secondary border border-border-subtle"
+      >
+        <Menu size={20} className="text-text-primary" />
+      </button>
+
+      {isOpen && (
+        <div
+          className="md:hidden fixed inset-0 bg-black/50 z-40"
+          onClick={() => setIsOpen(false)}
+        />
+      )}
+
+      <aside className={`
+        fixed md:relative inset-y-0 left-0 z-50
+        w-[220px] h-full flex flex-col bg-bg-secondary border-r border-border-subtle
+        transform transition-transform duration-200 ease-out
+        ${isOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"}
+      `}>
       <div className="h-12 px-3 flex items-center border-b border-border-subtle">
         <button className="flex items-center gap-2 px-2 py-1 rounded hover:bg-bg-hover transition-colors">
           <div className="w-5 h-5 rounded bg-accent flex items-center justify-center text-xs font-medium">
@@ -59,6 +86,7 @@ export function Sidebar() {
             onClick={() => {
               setActiveView("all");
               setFilterStatus(null);
+              handleNavClick();
             }}
             className={`w-full flex items-center gap-2 px-2 py-1.5 rounded text-sm transition-colors ${
               activeView === "all" && !filterStatus
@@ -75,6 +103,7 @@ export function Sidebar() {
             onClick={() => {
               setActiveView("active");
               setFilterStatus(null);
+              handleNavClick();
             }}
             className={`w-full flex items-center gap-2 px-2 py-1.5 rounded text-sm transition-colors ${
               activeView === "active"
@@ -91,6 +120,7 @@ export function Sidebar() {
             onClick={() => {
               setActiveView("backlog");
               setFilterStatus(null);
+              handleNavClick();
             }}
             className={`w-full flex items-center gap-2 px-2 py-1.5 rounded text-sm transition-colors ${
               activeView === "backlog"
@@ -115,6 +145,7 @@ export function Sidebar() {
                 onClick={() => {
                   setActiveView("all");
                   setFilterStatus(filterStatus === status ? null : status);
+                  handleNavClick();
                 }}
                 className={`w-full flex items-center gap-2 px-2 py-1.5 rounded text-sm transition-colors ${
                   filterStatus === status
@@ -138,5 +169,6 @@ export function Sidebar() {
         </button>
       </div>
     </aside>
+    </>
   );
 }

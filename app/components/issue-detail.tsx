@@ -187,7 +187,12 @@ export function IssueDetail() {
   };
 
   return (
-    <div className="w-[400px] h-full bg-bg-secondary border-l border-border-subtle flex flex-col shrink-0">
+    <>
+      <div
+        className="md:hidden fixed inset-0 bg-black/50 z-40"
+        onClick={() => selectIssue(null)}
+      />
+      <div className="fixed md:relative inset-y-0 right-0 z-50 w-full sm:w-[400px] h-full bg-bg-secondary border-l border-border-subtle flex flex-col shrink-0">
       <header className="h-12 px-4 flex items-center justify-between border-b border-border-subtle shrink-0">
         <span className="text-xs text-text-tertiary">{issue.identifier}</span>
         <div className="flex items-center gap-1">
@@ -407,5 +412,6 @@ export function IssueDetail() {
         </div>
       </div>
     </div>
+    </>
   );
 }
